@@ -29,11 +29,19 @@ class Parser:
         # Pulisci e filtra vuoti
         frasi = [f.strip() for f in frasi if f and f.strip()]
         return frasi
+    
+    def create_index(self,chunks):
+        indice={}
+        for chunk in chunks:
+            indice[chunk]=len(chunk)
+        return indice
 
 # Esempio d'uso
 if __name__ == "__main__":
     p = Parser("Riassunti-LLM\Diritto della crisi d-impresa e dell-insolvenza.pdf")
     testo = p.create_text()
     chunks = p.create_chunks(testo)
+    indice = p.create_index(chunks)
     print(f"Numero di chunk: {len(chunks)}")
-    print(chunks[5])  # anteprima
+    prima_coppia = list(indice.items())[0]
+    print(prima_coppia)    
