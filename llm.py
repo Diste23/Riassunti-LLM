@@ -96,15 +96,15 @@ class Elaborazione:
 
         return output_path
 
-pdf_path = r"C:\Users\Maurizio\Desktop\Progetti\Riassunti LLM\Riassunti-LLM\Diritto della crisi d-impresa e dell-insolvenza.pdf"
-p = Parser(str(pdf_path))
-testo = p.create_text()
-chunks = p.create_chunks(testo)
-indice = p.create_index(chunks)
+# pdf_path = r"C:\Users\Maurizio\Desktop\Progetti\Riassunti LLM\Riassunti-LLM\Dispensa di diritto delle assicurazioni.pdf"
+# p = Parser(str(pdf_path))
+# testo = p.create_text()
+# chunks = p.create_chunks(testo)
+# indice = p.create_index(chunks)
 
-elab = Elaborazione(indice)
-tutti_i_gruppi = elab.create_blocks(indice)       # <
-risultato = elab.create_summary(tutti_i_gruppi)
-output_file = elab.salva_pdf(risultato, pdf_path)
-print(f"✅ Riassunto salvato in: {output_file}")
+# elab = Elaborazione(indice)
+# tutti_i_gruppi = elab.create_blocks(indice)       # <
+# risultato = elab.create_summary(tutti_i_gruppi)
+# output_file = elab.salva_pdf(risultato, pdf_path)
+# print(f"✅ Riassunto salvato in: {output_file}")
 
