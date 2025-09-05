@@ -7,7 +7,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 
-# Carica le variabili da .env
+# Carico le variabili da .env
 load_dotenv()
 
 client = OpenAI()
@@ -18,7 +18,7 @@ class Elaborazione:
         pass
 
     def create_blocks(self,indice):
-        chunks = list(indice.keys())  # oppure la tua lista reale di chunk
+        chunks = list(indice.keys())  # oppure la lista di chunk
         lunghezze = list(indice.values())
 
         gruppi_testo = []
@@ -28,7 +28,7 @@ class Elaborazione:
 
         for chunk, lung in zip(chunks, lunghezze):
             if somma + lung > limite and gruppo_corrente:
-                # chiudi gruppo
+                # chiudo gruppo
                 gruppi_testo.append("".join(gruppo_corrente))
                 gruppo_corrente = []
                 somma = 0
@@ -36,24 +36,25 @@ class Elaborazione:
             gruppo_corrente.append(chunk)
             somma += lung
 
-        # aggiungi ultimo gruppo
+        # aggiungo ultimo gruppo
         if gruppo_corrente:
             gruppi_testo.append("".join(gruppo_corrente))
 
         return gruppi_testo
-        # ora puoi iterare sui testi concatenati
+        # iterazione sui testi concatenati
 
     def create_summary(self, gruppi_testo: list[str]) -> str:
         summary = ""
         for i, gruppo in enumerate(gruppi_testo, start=1):
             response = client.responses.create(
-                model="gpt-5-nano",  # resta sul tuo modello
+                model="gpt-5-nano",  
                 instructions=(
                     "Sei un giurista esperto in diritto societario, privato, civile, "
                     "costituzionale e commerciale. Riassumi in modo accurato e fedele, "
                     "senza perdere o distorcere informazioni importanti. Se possibile, "
                     "usa punti elenco e mantieni la terminologia giuridica corretta." \
                     "Non interrompere mai bruscamente il tuo riassunto, se necessario continua. " \
+                    "Presta particolare attenzione alle definizioni, quando spieghi la differenza fra 2 fatispecie devi scrivere il nome e la definizione di uno e poi nome e definizione dell'altro in modo chiaro."
                     "All'Inizio del riassunto fai un elenco puntato degli argomenti principali che andrai a riassumere nelle righe successive."
                     "Non propormi altre cose che potresti fare o suggerimenti. limitati esclusivamente a svolgere il tuo compito"
                 ),
@@ -84,7 +85,7 @@ class Elaborazione:
         story.append(Paragraph("Riassunto LLM", styles["Title"]))
         story.append(Spacer(1, 20))
 
-        # Aggiungi paragrafi del riassunto
+        # Aggiungo paragrafi del riassunto
         for par in riassunto.split("\n"):
             if par.strip():
                 story.append(Paragraph(par.strip(), styles["Normal"]))
@@ -102,7 +103,7 @@ chunks = p.create_chunks(testo)
 indice = p.create_index(chunks)
 
 elab = Elaborazione(indice)
-tutti_i_gruppi = elab.create_blocks(indice)       # << qui limiti ai primi due
+tutti_i_gruppi = elab.create_blocks(indice)       # <
 risultato = elab.create_summary(tutti_i_gruppi)
 output_file = elab.salva_pdf(risultato, pdf_path)
 print(f"✅ Riassunto salvato in: {output_file}")

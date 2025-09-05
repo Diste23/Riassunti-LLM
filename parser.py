@@ -12,9 +12,9 @@ class Parser:
             for pagina in pdf.pages:
                 estratto = pagina.extract_text() or ""
                 testo.append(estratto)
-        # Unisci il testo delle pagine separandole con una riga vuota
+        # Unisco il testo delle pagine separandole con una riga vuota
         full_text = "\n\n".join(testo)
-        # Normalizza spazi multipli e spazi prima dei segni di punteggiatura
+        # Normalizzo spazi multipli e spazi prima dei segni di punteggiatura
         full_text = re.sub(r"[ \t]+", " ", full_text)
         full_text = re.sub(r" *\n *", "\n", full_text)
         return full_text.strip()
@@ -24,9 +24,8 @@ class Parser:
         Divide il testo in frasi (chunk) ogni volta che trova un punto finale.
         Mantiene il punto alla fine di ogni chunk.
         """
-        # Divide su punto seguito da spazi/newline, mantenendo il punto nel chunk precedente
+        # Divido su punto seguito da spazi/newline, mantenendo il punto nel chunk precedente
         frasi = re.split(r"(?<=\.)\s+", testo)
-        # Pulisci e filtra vuoti
         frasi = [f.strip() for f in frasi if f and f.strip()]
         return frasi
     
